@@ -7,7 +7,7 @@ let users = require('./auth_users.js').users;
 const public_users = express.Router();
 const BASE_URL = 'http://localhost:5000';
 
-// Internal data routes for Axios
+// Internal routes for Axios
 public_users.get('/internal/books', (req, res) => {
   res.json(books);
 });
@@ -49,10 +49,10 @@ public_users.post('/register', (req, res) => {
 // Get all books using Axios
 public_users.get('/', async (req, res) => {
   try {
-    const response = await axios.get(${BASE_URL}/internal/books);
-    res.status(200).json(response.data);
+    const response = await axios.get(BASE_URL + '/internal/books');
+    return res.status(200).json(response.data);
   } catch (error) {
-    res.status(500).json({ message: 'Error retrieving books' });
+    return res.status(500).json({ message: 'Error retrieving books' });
   }
 });
 
@@ -60,16 +60,16 @@ public_users.get('/', async (req, res) => {
 public_users.get('/isbn/:isbn', async (req, res) => {
   try {
     const response = await axios.get(
-      ${BASE_URL}/internal/isbn/${encodeURIComponent(req.params.isbn)}
+      BASE_URL + '/internal/isbn/' + encodeURIComponent(req.params.isbn)
     );
 
     if (Object.keys(response.data).length === 0) {
       return res.status(404).json({ message: 'Book not found' });
     }
 
-    res.status(200).json(response.data);
+    return res.status(200).json(response.data);
   } catch (error) {
-    res.status(500).json({ message: 'Error retrieving book' });
+    return res.status(500).json({ message: 'Error retrieving book' });
   }
 });
 
@@ -77,11 +77,11 @@ public_users.get('/isbn/:isbn', async (req, res) => {
 public_users.get('/author/:author', async (req, res) => {
   try {
     const response = await axios.get(
-      ${BASE_URL}/internal/author/${encodeURIComponent(req.params.author)}
+      BASE_URL + '/internal/author/' + encodeURIComponent(req.params.author)
     );
-    res.status(200).json(response.data);
+    return res.status(200).json(response.data);
   } catch (error) {
-    res.status(500).json({ message: 'Error retrieving books' });
+    return res.status(500).json({ message: 'Error retrieving books' });
   }
 });
 
@@ -89,11 +89,11 @@ public_users.get('/author/:author', async (req, res) => {
 public_users.get('/title/:title', async (req, res) => {
   try {
     const response = await axios.get(
-      ${BASE_URL}/internal/title/${encodeURIComponent(req.params.title)}
+      BASE_URL + '/internal/title/' + encodeURIComponent(req.params.title)
     );
-    res.status(200).json(response.data);
+    return res.status(200).json(response.data);
   } catch (error) {
-    res.status(500).json({ message: 'Error retrieving books' });
+    return res.status(500).json({ message: 'Error retrieving books' });
   }
 });
 
@@ -105,7 +105,7 @@ public_users.get('/review/:isbn', (req, res) => {
     return res.status(404).json({ message: 'Book not found' });
   }
 
-  res.status(200).json(book.reviews || {});
+  return res.status(200).json(book.reviews || {});
 });
 
 module.exports.general = public_users;
